@@ -1,0 +1,14 @@
+.splide__arrows {
+  .splide__arrow--next,
+  .splide__arrow--prev {
+    width: 48px;
+    height: 48px;
+    background-color: $secondary;
+    svg {
+      fill: #b1b3b9;
+    }
+  }
+  .splide__arrow:disabled {
+    opacity: 0;
+  }
+}

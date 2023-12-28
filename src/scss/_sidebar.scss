@@ -1,0 +1,19 @@
+.list-group {
+  .list-group-item {
+    border-radius: $border-radius;
+    padding: 0.5rem 0.5rem;
+    &:hover {
+      background-color: $secondary;
+    }
+  }
+}
+.sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 56px;
+  height: 100vh;
+  overflow: scroll;
+  @media screen and (max-width: 1199px) {
+    display: none;
+  }
+}
