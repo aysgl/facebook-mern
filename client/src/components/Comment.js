@@ -25,13 +25,13 @@ const Comment = () => {
             <div
               aria-label="Bir Avatar Çıkartması ile Yorum Yap"
               role="button"
-              tabindex="0"
+              tabIndex="0"
             >
               <Avatars />
             </div>
           </li>
           <li className="list-group-item">
-            <div aria-label="Bir ifade simgesi ekle" role="button" tabindex="0">
+            <div aria-label="Bir ifade simgesi ekle" role="button" tabIndex="0">
               <IconSmile />
             </div>
           </li>
@@ -39,13 +39,13 @@ const Comment = () => {
             <div
               aria-label="Bir fotoğraf veya video ekle"
               role="button"
-              tabindex="0"
+              tabIndex="0"
             >
               <IconPhoto />
             </div>
           </li>
           <li className="list-group-item">
-            <div aria-label="Bir GIF ile Yorum Yap" role="button" tabindex="0">
+            <div aria-label="Bir GIF ile Yorum Yap" role="button" tabIndex="0">
               <IconGif />
             </div>
           </li>
@@ -53,7 +53,7 @@ const Comment = () => {
             <div
               aria-label="Bir Çıkartmayla Yorum Yap"
               role="button"
-              tabindex="0"
+              tabIndex="0"
             >
               <IconSticker />
             </div>

@@ -1,13 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const UserModel = require("./models");
+const UserModel = require("./models/User");
 const PostModel = require("./models/Post");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
 const FriendModel = require("./models/Friend");
+const StoryModel = require("./models/Story");
 require("dotenv").config();
 
 const app = express();
@@ -38,63 +39,81 @@ app.get("/friends", async (req, res) => {
   }
 });
 
-// app.post("/register", async (req, res) => {
-//   try {
-//     const { username, password } = req.body;
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const user = await UserModel.create({
-//       username: username,
-//       password: hashedPassword,
-//     });
-//     res
-//       .status(200)
-//       .json({ data: user, message: "Registration successfully completed" });
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "An error occurred while creating the registration",
-//       error: error.message,
-//     });
-//   }
-// });
+app.get("/stories", async (req, res) => {
+  try {
+    const story = await StoryModel.find();
+    res.status(200).json({ data: story });
+  } catch (error) {
+    res.status(404).json({ messages: "Not found story" });
+  }
+});
 
-// app.post("/login", async (req, res) => {
-//   const { username, password } = req.body;
-//   const user = await UserModel.findOne({ username });
+app.get("/posts", async (req, res) => {
+  try {
+    const post = await PostModel.find();
+    res.status(200).json({ data: post });
+  } catch (error) {
+    res.status(404).json({ messages: "Not found post" });
+  }
+});
 
-//   if (!user) {
-//     return res.status(400).json({
-//       message: "User not found",
-//     });
-//   }
+app.post("/register", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await UserModel.create({
+      username: username,
+      password: hashedPassword,
+    });
+    res
+      .status(200)
+      .json({ data: user, message: "Registration successfully completed" });
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred while creating the registration",
+      error: error.message,
+    });
+  }
+});
 
-//   try {
-//     const passwordMatch = await bcrypt.compare(password, user.password);
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const user = await UserModel.findOne({ username });
 
-//     if (passwordMatch) {
-//       jwt.sign({ username, id: user._id }, secret, {}, (err, token) => {
-//         if (err) {
-//           return res.status(500).json({
-//             message: "Error signing token",
-//             error: err.message,
-//           });
-//         }
-//         res.cookie("token", token).json({
-//           username,
-//           id: user._id,
-//         });
-//       });
-//     } else {
-//       res.status(400).json({
-//         message: "Password does not match",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "An error occurred",
-//       error: error.message,
-//     });
-//   }
-// });
+  if (!user) {
+    return res.status(400).json({
+      message: "User not found",
+    });
+  }
+
+  try {
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (passwordMatch) {
+      jwt.sign({ username, id: user._id }, secret, {}, (err, token) => {
+        if (err) {
+          return res.status(500).json({
+            message: "Error signing token",
+            error: err.message,
+          });
+        }
+        res.cookie("token", token).json({
+          username,
+          id: user._id,
+        });
+      });
+    } else {
+      res.status(400).json({
+        message: "Password does not match",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred",
+      error: error.message,
+    });
+  }
+});
 
 // app.get("/profile", (req, res) => {
 //   const token = req.cookies.token;

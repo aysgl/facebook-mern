@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IconDots from "./Icons/IconDots";
 import IconClose from "./Icons/IconClose";
 import IconCommentFill from "./Icons/IconCommentFill";
@@ -17,16 +17,28 @@ import postsData from "../data/posts";
 const Posts = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [posts, setPosts] = useState([]);
 
-  const totalEmotions = postsData.reduce((emotionCounts, post) => {
+  useEffect(() => {
+    fetch(`http://localhost:8080/posts`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }, []);
+
+  const totalEmotions = posts.reduce((emotionCounts, post) => {
     emotionCounts[post.emotions] = (emotionCounts[post.emotions] || 0) + 1;
     return emotionCounts;
   }, {});
 
   return (
     <div>
-      {postsData.map((i) => (
-        <div key={i.id} className="bg-dark rounded mb-3">
+      {posts.map((i, index) => (
+        <div key={index} className="bg-dark rounded mb-3">
           <div className="p-3 d-flex justify-content-between align-items-center">
             <div className="username d-flex align-items-center">
               <Avatar url={i.userImg} size={40} />

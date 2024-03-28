@@ -1,13 +1,17 @@
 const { Schema, model } = require("mongoose");
 
-const FriendSchema = new Schema(
+const StorySchema = new Schema(
   {
-    fullname: {
+    name: {
       type: String,
       required: true,
       unique: true,
       maxLength: [100, "Title must not exceed 100 characters"],
       minLength: [10, "Title must be at least 10 characters"],
+    },
+    story: {
+      type: String,
+      required: true,
     },
     img: {
       type: String,
@@ -17,6 +21,6 @@ const FriendSchema = new Schema(
   { timestamps: true }
 );
 
-const FriendModel = model("Friend", FriendSchema);
+const StoryModel = model("Story", StorySchema);
 
-module.exports = FriendModel;
+module.exports = StoryModel;

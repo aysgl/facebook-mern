@@ -1,9 +1,23 @@
-import React from "react";
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect, useState } from "react";
 import storiesData from "../data/stories";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import IconPlus from "./Icons/IconPlus";
 
 const Stories = () => {
+  const [stories, setStories] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/stories`)
+      .then((res) => res.json())
+      .then((data) => {
+        setStories(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching stories:", error);
+      });
+  }, []);
+
   const option = {
     perPage: 4,
     autoplay: false,
@@ -31,14 +45,14 @@ const Stories = () => {
             </div>
           </div>
         </SplideSlide>
-        {storiesData.map((story) => (
-          <SplideSlide key={story.id}>
+        {stories.map((story, index) => (
+          <SplideSlide key={index}>
             <div className="story p-1">
               <div className="username">
-                <img className="username-img" src={story.img} />
-                <p className="username-title mb-2">{story.name}</p>
+                <img className="username-img" src={story?.img} />
+                <p className="username-title mb-2">{story?.name}</p>
               </div>
-              <img className="img-fluid story-img" src={story.story} />
+              <img className="img-fluid story-img" src={story?.story} />
             </div>
           </SplideSlide>
         ))}
